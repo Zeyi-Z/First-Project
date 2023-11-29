@@ -77,13 +77,14 @@ SELECT Rental_Duration_seconds, Start_Station_Name, End_Station_Name, User_Type,
 FROM dbo.Divvy_Trips_2019_Q2
 WHERE gender != 'DNA' AND Start_Station_Name <> End_Station_Name AND generation != 'Unknown Generation' 
 Order by 4,5,1 DESC
---user type count
+
+--user type count #1
 SELECT
     (SELECT COUNT(*) FROM dbo.Divvy_Trips_2019_Q2 WHERE User_Type = 'customer' AND gender = 'male') AS Male_Customer,
     (SELECT COUNT(*) FROM dbo.Divvy_Trips_2019_Q2 WHERE User_Type = 'customer' AND gender = 'female') AS Female_Customer,
     (SELECT COUNT(*) FROM dbo.Divvy_Trips_2019_Q2 WHERE User_Type = 'subscriber' AND gender = 'male') AS Male_Subscriber,
     (SELECT COUNT(*) FROM dbo.Divvy_Trips_2019_Q2 WHERE User_Type = 'subscriber' AND gender = 'female') AS Female_Subscriber;
--- generation with gender count
+-- Counting customers and subscribers based on gender(#2)
 SELECT
     generation,
     SUM(CASE WHEN User_Type = 'customer' AND gender = 'male' THEN 1 ELSE 0 END) AS MaleCustomer,
@@ -99,4 +100,8 @@ SELECT
 	FROM dbo.Divvy_Trips_2019_Q2 
 	WHERE User_Type !='DNA' 
 	GROUP BY User_Type
-
+--Cleaned table for visualization
+SELECT User_Type, Start_Station_Name, End_Station_Name, Round(Rental_Duration_Seconds/3600,2) AS TotalHrTraveled, Gender, generation 
+FROM dbo.Divvy_Trips_2019_Q2
+WHERE gender != 'DNA' AND Start_Station_Name <> End_Station_Name AND generation != 'Unknown Generation' 
+Order by 1,5,6 DESC

@@ -100,8 +100,31 @@ SELECT
 	FROM dbo.Divvy_Trips_2019_Q2 
 	WHERE User_Type !='DNA' 
 	GROUP BY User_Type
+--This is an attempt to separate the avenues from the streets in both start and end station
+
+		SELECT
+            SUBSTRING(start_station_name, 1, CHARINDEX(' ', start_station_name)) AS Start_avenue_name,
+			SUBSTRING(start_station_name, CHARINDEX('&', start_station_name) + 1, LEN(start_station_name)) AS Start_Address_2
+        FROM
+            dbo.Divvy_Trips_2019_Q2
+        UNION
+        SELECT
+            SUBSTRING(end_station_name, 1, CHARINDEX(' ', end_station_name)) AS End_avenue_name,
+			SUBSTRING(end_station_name, CHARINDEX( '&', end_station_name) + 1, LEN(end_station_name)) AS End_Address_2
+        FROM
+            dbo.Divvy_Trips_2019_Q2
 --Cleaned table for visualization
-SELECT User_Type, Start_Station_Name, End_Station_Name, Round(Rental_Duration_Seconds/3600,2) AS TotalHrTraveled, Gender, generation 
+SELECT User_Type, 
+	Start_Station_Name, 
+	End_Station_Name, 
+	Round(Rental_Duration_Seconds/3600,2) AS TotalHrTraveled, 
+	Gender, 
+	generation 
 FROM dbo.Divvy_Trips_2019_Q2
 WHERE gender != 'DNA' AND Start_Station_Name <> End_Station_Name AND generation != 'Unknown Generation' 
 Order by 1,5,6 DESC
+
+
+
+
+

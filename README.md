@@ -2,4 +2,4 @@ You can find the Table that I used for my project here: https://divvy-tripdata.s
 
 This is my first project. It uses both SQL IN and SQL OUT to achieve 2NF or even 3NF subjectively speaking.
 
-It also contains some data manipulation and extraction.
+It also contains some data cleaning and manipulation.
